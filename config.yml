@@ -18,7 +18,8 @@ charset: "UTF-8"
 # simple: default and very basic template engine
 # template_toolkit: TT
 
-template: "simple"
+#template: "simple"
+template: "template_toolkit"
 
 # template: "template_toolkit"
 # engines:
@@ -26,4 +27,18 @@ template: "simple"
 #     encoding:  'utf8'
 #     start_tag: '[%'
 #     end_tag:   '%]'
+
+session: "Simple"
+log: "debug"
+show_errors: 1
+startup_info: 1
+warnings: 1
+
+username: "admin"
+password: "password"
+
+plugins:
+    Database:
+                driver: "SQLite"
+                database: "./giftregistry.sqlite"
 
