@@ -15,11 +15,18 @@ get '/' => sub {
     	);
     	$sth->execute or die $sth->errstr ;
 
+	my $users_sth = database->prepare(
+		'select id, username, realname, password from users order by id desc',
+    	);
+    	$users_sth->execute or die $users_sth->errstr ;
 
   template 'show_entries.tt', {
      'msg' => get_flash(),
      'add_entry_url' => uri_for('/add'),
+     'add_users_url' => uri_for('/add_users'),     
      'entries' => $sth->fetchall_hashref('id'),
+     'users' => $users_sth->fetchall_hashref('id'),
+     
   };
 }; #end of '/' sub
 
@@ -37,6 +44,41 @@ post '/add' => sub {
    set_flash('New entry posted!');
    redirect '/';
 }; #end of '/add' sub
+
+
+post '/add_users' => sub {
+   if ( not session('logged_in') ) {
+      send_error("Not logged in", 401);
+   }
+ 
+	my $sth = database->prepare(
+   		'insert into users (username, realname, password) values (?, ?, ?)',
+	);
+	$sth->execute(params->{'username'}, params->{'realname'}, 
+		params->{'password'}) or die $sth->errstr;
+
+   set_flash('user added!');
+   
+   redirect '/show_users';
+}; #end of '/add_users' sub
+
+any '/show_users' => sub {
+   if ( not session('logged_in') ) {
+      send_error("Not logged in", 401);
+   }
+   
+	my $users_sth = database->prepare(
+		'select id, username, realname, password from users order by id desc',
+    	);
+    	$users_sth->execute or die $users_sth->errstr ;
+   
+     template 'show_users.tt', {
+     'msg' => get_flash(),
+     'users' => $users_sth->fetchall_hashref('id'),
+    'add_users_url' => uri_for('/add_users'), 
+  };
+   
+}; #end of '/show_users' sub
 
 
 any ['get', 'post'] => '/login' => sub {

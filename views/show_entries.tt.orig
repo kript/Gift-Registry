@@ -12,7 +12,7 @@
 <ul class=entries>
 <% IF entries.size %>
   <% FOREACH id IN entries.keys.nsort %>
-    <li><b><% entries.$id.title %></b>: <% entries.$id.text %>
+    <li><h2><% entries.$id.title %></h2><% entries.$id.text %>
   <% END %>
 <% ELSE %>
   <li><em>Unbelievable.  No entries here so far</em>

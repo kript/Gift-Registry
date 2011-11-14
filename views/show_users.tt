@@ -1,0 +1,28 @@
+<% IF session.logged_in %>
+  <form action="<% add_users_url %>" method=post class=add-entry>
+    <dl>
+      <dt>Username:
+      <dd><input type=text size=30 name=username>
+      <dt>'Real' name:
+      <dd><input type=text size=30 name=realname>
+      <dt>Password:
+      <dd><input type=text size=30 name=password>     
+       <dd><input type=submit value=Enable>
+    </dl>
+  </form>
+
+	<hl>
+	<H2> Current Defined Users </H2>
+	<ul class=entries>
+	<% IF users.size %>
+  		<% FOREACH id IN users.keys.nsort %>
+    	<li><b><% users.$id.realname %></b>: <% users.$id.username %>
+  	<% END %>
+	<% ELSE %>
+  		<li><em>Unbelievable.  No users here so far</em>
+	<% END %>
+
+	</ul>
+<% END %>
+
+
